@@ -2,6 +2,16 @@ cmake_minimum_required(VERSION 3.10)
 
 project(G_4_file VERSION 1.0 LANGUAGES C)
 
+if(NOT WIN32)
+  add_definitions(-D_FILE_OFFSET_BITS=64)
+
+  include(CheckTypeSize)
+  check_type_size("off_t" OFF_T_SIZE)
+  if (OFF_T_SIZE LESS 8)
+    message(FATAL_ERROR "off_t is less than 64 bits")
+  endif()
+endif()
+
 set(SOURCES
   src/file.c
 )
